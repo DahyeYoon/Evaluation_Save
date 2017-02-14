@@ -37,6 +37,7 @@ y=tf.sigmoid(y)
 cost= tf.reduce_sum(-y_*tf.log(y)-(1-y_)*tf.log(1-y), reduction_indices=1)
 cost = tf.reduce_mean(cost)
 train= tf.train.GradientDescentOptimizer(Learning_Rate).minimize(cost)
+# argmax ==> obtaining index
 correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 tf.argmax(y, 1)
