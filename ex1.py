@@ -34,12 +34,15 @@ y=tf.sigmoid(y)
 
 
 # Training
-cost_=-y_*tf.log(y)-(1-y_)*tf.log(1-y)
-cost= tf.reduce_sum(cost_, reduction_indices=1)
+cost= tf.reduce_sum(-y_*tf.log(y)-(1-y_)*tf.log(1-y), reduction_indices=1)
+cost = tf.reduce_mean(cost)
 train= tf.train.GradientDescentOptimizer(Learning_Rate).minimize(cost)
 sess = tf.Session()
 init=tf.global_variables_initializer()
 sess.run(init)
-_loss, loss = sess.run( [cost_, cost], feed_dict=tensor_map)
-print ("_loss: ", _loss)
-print ("loss: ", loss)
+
+for i in range(1000):
+    _, loss = sess.run([train, cost], tensor_map)
+    if i%100==0:
+        print ("Step: " ,i)
+        print("Loss: ", loss)
