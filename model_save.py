@@ -51,7 +51,7 @@ sess.run(init)
 for i in range(1000):
     _, loss, acc = sess.run([train, cost, accuracy], tensor_map)
     if i%100==0:
-        saver.save(sess, './tensorflow_checkpoint')
+        saver.save(sess, './tensorflow_checkpoint.ckpt')
         print("==============")
         print("Step: ", i)
         print("Loss: ", loss)
