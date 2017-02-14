@@ -18,17 +18,18 @@ tensor_map={x:input_data, y_:label_data}
 # Building Model
 W_h1 =tf.Variable(tf.truncated_normal(shape=[INPUT_SIZE, HIDDEN1_SIZE]), dtype=tf.float32) # truncated_normal: Outputs random values from a normal distribution
 b_h1 = tf.Variable(tf.zeros(shape=[HIDDEN1_SIZE]), dtype=tf.float32)
-hidden1=tf.matmul(x, W_h1) +b_h1
-hidden1=tf.sigmoid(hidden1)
 
 W_h2 =tf.Variable(tf.truncated_normal(shape=[HIDDEN1_SIZE, HIDDEN2_SIZE]), dtype=tf.float32)
 b_h2 = tf.Variable(tf.zeros(shape=[HIDDEN2_SIZE]), dtype=tf.float32)
-hidden2 =  tf.matmul(hidden1,W_h2) + b_h2
-hidden2=tf.sigmoid(hidden2)
 
 W_o = tf.Variable(tf.truncated_normal(shape=[HIDDEN2_SIZE, CLASSES]), dtype=tf.float32)
 b_o = tf.Variable(tf.zeros(shape=[CLASSES]), dtype=tf.float32)
+
+
+hidden1=tf.sigmoid(tf.matmul(x, W_h1) +b_h1)
+hidden2=tf.sigmoid(tf.matmul(hidden1,W_h2) + b_h2)
 y = tf.matmul(hidden2, W_o) +b_o
+
 y=tf.sigmoid(y)
 
 
