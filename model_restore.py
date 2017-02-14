@@ -10,8 +10,8 @@ CLASSES=5
 Learning_Rate=0.05
 
 # shape must be matched to data dimension
-x=tf.placeholder(tf.float32, shape=[None, INPUT_SIZE]) #shape=[batchSize, dimension]
-y_=tf.placeholder(tf.float32, shape=[None, CLASSES])
+x=tf.placeholder(tf.float32, shape=[None, INPUT_SIZE], name='x') #shape=[batchSize, dimension]
+y_=tf.placeholder(tf.float32, shape=[None, CLASSES], name='y_')
 
 tensor_map={x:input_data, y_:label_data}
 
@@ -32,25 +32,8 @@ hidden1=tf.sigmoid(tf.matmul(x, W_h1) +b_h1, name='hidden1')
 hidden2=tf.sigmoid(tf.matmul(hidden1,W_h2) + b_h2, name='hidden2')
 y=tf.sigmoid(tf.matmul(hidden2, W_o) +b_o, name='y')
 
-
-
-# Training
-cost= tf.reduce_sum(-y_*tf.log(y)-(1-y_)*tf.log(1-y), reduction_indices=1)
-cost = tf.reduce_mean(cost)
-train= tf.train.GradientDescentOptimizer(Learning_Rate).minimize(cost)
-# argmax ==> obtaining index
-correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
-accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-tf.argmax(y, 1)
 sess = tf.Session()
-init=tf.global_variables_initializer()
-sess.run(init)
-
-for i in range(1000):
-    _, loss, acc = sess.run([train, cost, accuracy], tensor_map)
-    if i%100==0:
-        saver.save(sess, './tensorflow_checkpoint.ckpt')
-        print("==============")
-        print("Step: ", i)
-        print("Loss: ", loss)
-        print("Acc: ", acc)
+# sess.run(tf.initialize_all_variables())
+saver.restore(sess, './tensorflow_checkpoint.ckpt')
+result=sess.run(y, tensor_map)
+print(result)
